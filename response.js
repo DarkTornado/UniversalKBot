@@ -2,6 +2,7 @@
 만능봇
 © 2021 Dark Tornado, All rights reserved.
 */
+
 const ZoneID = {
     "서울": 1159068000,
     "부산": 2611053000,
@@ -49,7 +50,23 @@ Tools.getWeather = (zone) => {
 
 
 function response(room, msg, sender, isGroupChat, replier) {
-    
+
+    /* 메인 */
+    if (msg == "/만능 심심해") {
+        replier.reply("아래와 같이 적어보세요!\n\n" +
+            "/만능 날씨\n" +
+            "/만능 몇시야\n" +
+            "/만능 점심\n" +
+            "/만능 메뉴추천\n" +
+            "/만능 음식종류\n" +
+            "/만능 맛집\n" +
+            "/만능 가위바위보\n" +
+            "/만능 이름궁합\n" +
+            "/만능 전화번호궁합\n" +
+            "/만능 코인\n" +
+            "/만능 오늘의실거래");
+    }
+
     /* 날씨 */
     if (msg == "/만능 날씨") {
         replier.reply("날씨는 이렇게 물어보세요.\n\n" +
