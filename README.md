@@ -4,6 +4,7 @@
 * 라이선스 : [Deep Dark License](https://github.com/DarkTornado/DeepDarkLicense) - Type C
 
 ## To do
+* [x] /만능 심심해
 * [x] /만능 날씨
 * [x] /만능 몇시야
 * [ ] /만능 점심
