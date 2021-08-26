@@ -2,7 +2,6 @@
 만능봇
 © 2021 Dark Tornado, All rights reserved.
 */
-
 const ZoneID = {
     "서울": 1159068000,
     "부산": 2611053000,
@@ -90,6 +89,21 @@ function response(room, msg, sender, isGroupChat, replier) {
         replier.reply("\"/만능 맛집 [음식] [지역]\" 를 말해보세요!\n\n" +
             "예시)\n" +
             "/만능 맛집 떡볶이 서울역");
+    } else if (msg.startsWith("/만능 맛집 ")) {
+        var data = msg.replace("/만능 맛집 ", "");
+        var data = Utils.parse("https://m.map.kakao.com/actions/searchView?q=" + data + "%20맛집")
+            .select("li.search_item.base");
+        var result = "[추천 리스트]\n";
+        var r = Math.random() * data.size() | 0;
+        var name = data.get(r).attr("data-title");
+        var link = data.get(r).attr("data-id");
+        for (var n = 0; n < data.size(); n++) {
+            var datum = data.get(n);
+            result += (n + 1) + ". " + datum.attr("data-title") + " ";
+        }
+        result += "\n\n오늘은 [" + name + "] 어때요?\n\n";
+        result += "카카오) https://place.map.kakao.com/m/" + link;
+        replier.reply(result);
     }
 
 }
