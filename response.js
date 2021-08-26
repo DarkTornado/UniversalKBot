@@ -85,7 +85,7 @@ function response(room, msg, sender, isGroupChat, replier) {
             day.getHours() + "시 " + day.getMinutes() + "분 입니다.");
     }
 
-    /* 시간 */
+    /* 맛집 */
     if (msg == "/만능 맛집") {
         replier.reply("\"/만능 맛집 [음식] [지역]\" 를 말해보세요!\n\n" +
             "예시)\n" +
