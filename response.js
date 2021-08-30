@@ -51,10 +51,12 @@ Tools.getFoodRecommend = (input) => {
     var data = Utils.parse("https://m.map.kakao.com/actions/searchView?q=" + input + "%20맛집")
         .select("li.search_item.base");
     var result = "[추천 리스트]\n";
-    var r = Math.random() * data.size() | 0;
+    var count = data.size();
+    if (count > 9) count = 9;
+    var r = Math.random() * count | 0;
     var name = data.get(r).attr("data-title");
     var link = data.get(r).attr("data-id");
-    for (var n = 0; n < data.size(); n++) {
+    for (var n = 0; n < count; n++) {
         var datum = data.get(n);
         result += (n + 1) + ". " + datum.attr("data-title") + " ";
     }
