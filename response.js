@@ -64,7 +64,37 @@ Tools.getFoodRecommend = (input) => {
     result += "카카오) https://place.map.kakao.com/m/" + link;
     return result;
 };
+Tools.getCoinMark = (name) => {
+    var data = Utils.parse("https://api.upbit.com/v1/market/all").text();
+    data = JSON.parse(data);
+    for (var n = 0; n < data.length; n++) {
+        if (data[n].korean_name == name) {
+            if (data[n].market.startsWith("KRW-")) return data[n].market;
+        }
+    }
+    return null;
+};
+Tools.getCoinInfo = (mark) => {
+    var data = Utils.parse("https://api.upbit.com/v1/ticker?markets=" + mark).text();
+    data = JSON.parse(data)[0];
+    var result = splitNumber(data.trade_price) + "원\n\n";
+    result += "오늘 시가 : " + splitNumber(data.opening_price) + "원\n";
+    result += "등락율 : " + (data.change == "RISE" ? "+" : "-") + Math.round(data.change_rate * 10000) / 100 + "%\n";
+    result += "업비트 시간 : " + new java.text.SimpleDateFormat("MM월dd일 HH시 mm분").format(new java.util.Date(data.timestamp));
+    return result;
+};
 
+splitNumber = (num) => {
+    if (num < 10000) return num;
+    num = (num + "").split("").reverse();
+    var result = [];
+    for (var n = 0; n < num.length; n++) {
+        if (n == 4) result.unshift("만 ");
+        if (n == 8) result.unshift("억 ");
+        result.unshift(num[n]);
+    }
+    return result.join("").trim().replace("만 0000", "만");
+};
 
 function response(room, msg, sender, isGroupChat, replier) {
 
@@ -73,15 +103,16 @@ function response(room, msg, sender, isGroupChat, replier) {
         replier.reply("아래와 같이 적어보세요!\n\n" +
             "/만능 날씨\n" +
             "/만능 몇시야\n" +
-            "/만능 점심\n" +
-            "/만능 메뉴추천\n" +
-            "/만능 음식종류\n" +
+            //"/만능 점심\n" +
+            //"/만능 메뉴추천\n" +
+            //"/만능 음식종류\n" +
             "/만능 맛집\n" +
-            "/만능 가위바위보\n" +
-            "/만능 이름궁합\n" +
-            "/만능 전화번호궁합\n" +
+            //"/만능 가위바위보\n" +
+            //"/만능 이름궁합\n" +
+            //"/만능 전화번호궁합\n" +
             "/만능 코인\n" +
-            "/만능 오늘의실거래");
+            //"/만능 오늘의실거래" + 
+            "");
     }
 
     /* 날씨 */
@@ -111,6 +142,20 @@ function response(room, msg, sender, isGroupChat, replier) {
         var data = msg.replace("/만능 맛집 ", "");
         var result = Tools.getFoodRecommend(data);
         replier.reply(result);
+    }
+
+    /* 코인 */
+    if (msg == "/만능 코인") {
+        replier.reply("/만능 코인 [코인이름]\n" +
+            "을 외쳐주세요!\n\n" +
+            "예시) /만능 코인 비트코인\n\n" +
+            "더 많은 정보는.." +
+            "\"/만능 심심해\"를 외쳐주세요");
+    } else if (msg.startsWith("/만능 코인 ")) {
+        var data = msg.replace("/만능 코인 ", "");
+        var mark = Tools.getCoinMark(data);
+        var result = Tools.getCoinInfo(mark);
+        replier.reply("[현재 " + data + " 시세]\n" + result);
     }
 
 }
